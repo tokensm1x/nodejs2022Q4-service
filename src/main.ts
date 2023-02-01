@@ -3,6 +3,9 @@ import { AppModule } from './app.module';
 import { SwaggerModule } from '@nestjs/swagger';
 import * as yaml from 'js-yaml';
 import { readFile } from 'fs/promises';
+import 'dotenv/config';
+
+const PORT = process.env.PORT || 4000;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -10,6 +13,6 @@ async function bootstrap() {
     await readFile('./doc/api.yaml', { encoding: 'utf-8' }),
   );
   SwaggerModule.setup('doc', app, document);
-  await app.listen(4000);
+  await app.listen(PORT);
 }
 bootstrap();
