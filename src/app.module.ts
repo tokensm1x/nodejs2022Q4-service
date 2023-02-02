@@ -5,10 +5,19 @@ import { UsersModule } from './app/users/users.module';
 import { TracksModule } from './app/tracks/tracks.module';
 import { AlbumsModule } from './app/albums/albums.module';
 import { ArtistsModule } from './app/artists/artists.module';
-import { FavoritsModule } from './app/favorits/favorits.module';
+import { FavoritesModule } from './app/favorites/favorites.module';
+import { DatabaseModule } from './database/database.module';
+import { InMemoryDB } from './database/in-memory.db';
 
 @Module({
-  imports: [UsersModule, TracksModule, AlbumsModule, ArtistsModule, FavoritsModule],
+  imports: [
+    UsersModule,
+    TracksModule,
+    AlbumsModule,
+    ArtistsModule,
+    FavoritesModule,
+    DatabaseModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
