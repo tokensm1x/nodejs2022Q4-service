@@ -2,8 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
   Param,
   Delete,
   HttpCode,
@@ -11,7 +9,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
-import { FavoritesModel, FavoritesResModel } from './models/favorites.model';
+import { FavoritesResModel } from './models/favorites.model';
 
 @Controller('favs')
 export class FavoritesController {

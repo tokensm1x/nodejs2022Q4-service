@@ -7,7 +7,6 @@ import { AlbumsModule } from './app/albums/albums.module';
 import { ArtistsModule } from './app/artists/artists.module';
 import { FavoritesModule } from './app/favorites/favorites.module';
 import { DatabaseModule } from './database/database.module';
-import { InMemoryDB } from './database/in-memory.db';
 
 @Module({
   imports: [

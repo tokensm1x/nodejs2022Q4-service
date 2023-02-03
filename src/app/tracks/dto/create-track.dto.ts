@@ -1,7 +1,6 @@
 import {
   IsNotEmpty,
   IsString,
-  IsNumber,
   ValidateIf,
   Min,
   Max,

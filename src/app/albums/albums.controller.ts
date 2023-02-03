@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   ValidationPipe,
@@ -11,7 +10,6 @@ import {
   HttpCode,
   HttpStatus,
   Put,
-  HttpException,
 } from '@nestjs/common';
 import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
 import { throwException } from 'src/common/exceptions/error-handler';

@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   ValidationPipe,
@@ -11,7 +10,6 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
-  HttpException,
 } from '@nestjs/common';
 import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
 import { throwException } from 'src/common/exceptions/error-handler';

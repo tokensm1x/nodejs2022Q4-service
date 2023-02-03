@@ -1,10 +1,4 @@
-import {
-  forwardRef,
-  HttpException,
-  HttpStatus,
-  Inject,
-  Injectable,
-} from '@nestjs/common';
+import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
 import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
 import { ADDED_SUCCESSFULLY } from 'src/common/constants/favorites';
