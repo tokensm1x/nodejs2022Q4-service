@@ -13,6 +13,8 @@ import { AlbumModel } from './models/album.model';
 import { v4 as uuid_v4 } from 'uuid';
 import { TracksService } from '../tracks/tracks.service';
 import { FavoritesService } from '../favorites/favorites.service';
+import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
+import { throwException } from 'src/common/exceptions/error-handler';
 
 @Injectable()
 export class AlbumsService {
@@ -53,7 +55,7 @@ export class AlbumsService {
       (album: AlbumModel) => album.id === id,
     );
     if (!album) {
-      throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
+      throwException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {
       album.name = name;
       album.year = year;
@@ -67,12 +69,26 @@ export class AlbumsService {
       (album: AlbumModel) => album.id === id,
     );
     if (albumIndex < 0) {
-      throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
+      throwException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {
       this._trackService.clearAlbums(id);
-      this._favsService.clearAlbums(id);
-      this._db.artists.splice(albumIndex, 1);
+      this._favsService.removeAlbum(id, true);
+      this._db.albums.splice(albumIndex, 1);
       return null;
     }
+  }
+
+  clearArtists(id: string): void {
+    const albums = this._db.albums.map((el: AlbumModel) => {
+      if (el.artistId === id) {
+        return {
+          ...el,
+          artistId: null,
+        };
+      } else {
+        return el;
+      }
+    });
+    this._db.albums = albums;
   }
 }

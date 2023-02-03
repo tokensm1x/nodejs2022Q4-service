@@ -13,8 +13,8 @@ import {
   Put,
   HttpException,
 } from '@nestjs/common';
-import { FavoritesService } from '../favorites/favorites.service';
-import { TracksService } from '../tracks/tracks.service';
+import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
+import { throwException } from 'src/common/exceptions/error-handler';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
@@ -42,8 +42,7 @@ export class AlbumsController {
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): AlbumModel {
     const album = this.albumsService.findOne(id);
-    if (!album)
-      throw new HttpException('Album not found', HttpStatus.NOT_FOUND);
+    if (!album) throwException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     return album;
   }
 
@@ -51,7 +50,7 @@ export class AlbumsController {
   @HttpCode(HttpStatus.OK)
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-    @Body() updateAlbumDto: UpdateAlbumDto,
+    @Body(ValidationPipe) updateAlbumDto: UpdateAlbumDto,
   ): AlbumModel {
     return this.albumsService.update(id, updateAlbumDto);
   }

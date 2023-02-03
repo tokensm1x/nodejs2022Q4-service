@@ -17,6 +17,8 @@ import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { TrackModel } from './models/track.model';
+import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
+import { throwException } from 'src/common/exceptions/error-handler';
 
 @Controller('track')
 export class TracksController {
@@ -40,8 +42,7 @@ export class TracksController {
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): TrackModel {
     const track = this.tracksService.findOne(id);
-    if (!track)
-      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
+    if (!track) throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     return track;
   }
 

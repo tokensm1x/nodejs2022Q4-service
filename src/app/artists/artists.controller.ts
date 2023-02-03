@@ -13,6 +13,8 @@ import {
   Put,
   HttpException,
 } from '@nestjs/common';
+import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
+import { throwException } from 'src/common/exceptions/error-handler';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
@@ -38,8 +40,7 @@ export class ArtistsController {
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     const artist = this.artistsService.findOne(id);
-    if (!artist)
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
+    if (!artist) throwException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     return artist;
   }
 

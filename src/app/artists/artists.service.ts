@@ -1,14 +1,33 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InMemoryDB } from 'src/database/in-memory.db';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
 import { ArtistModel } from './models/artist.model';
 import { v4 as uuid_v4 } from 'uuid';
+import { AlbumsService } from '../albums/albums.service';
+import { TracksService } from '../tracks/tracks.service';
+import { FavoritesService } from '../favorites/favorites.service';
+import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
+import { throwException } from 'src/common/exceptions/error-handler';
 
 @Injectable()
 export class ArtistsService {
-  constructor(private _db: InMemoryDB) {}
+  constructor(
+    private _db: InMemoryDB,
+    @Inject(forwardRef(() => AlbumsService))
+    private _albumService: AlbumsService,
+    @Inject(forwardRef(() => TracksService))
+    private _trackService: TracksService,
+    @Inject(forwardRef(() => FavoritesService))
+    private _favsService: FavoritesService,
+  ) {}
 
   create(createArtistDto: CreateArtistDto): ArtistModel {
     const artist: ArtistModel = new Artist({
@@ -29,6 +48,7 @@ export class ArtistsService {
       (artist: ArtistModel) => artist.id === id,
     );
     if (!artist) return null;
+
     return artist;
   }
 
@@ -38,7 +58,7 @@ export class ArtistsService {
       (artist: ArtistModel) => artist.id === id,
     );
     if (!artist) {
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
+      throwException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {
       artist.grammy = grammy;
       artist.name = name;
@@ -51,8 +71,11 @@ export class ArtistsService {
       (artist: ArtistModel) => artist.id === id,
     );
     if (artistIndex < 0) {
-      throw new HttpException('Artist not found', HttpStatus.NOT_FOUND);
+      throwException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {
+      this._albumService.clearArtists(id);
+      this._trackService.clearArtists(id);
+      this._favsService.removeArtist(id, true);
       this._db.artists.splice(artistIndex, 1);
       return null;
     }

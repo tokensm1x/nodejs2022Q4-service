@@ -5,6 +5,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { v4 as uuid_v4 } from 'uuid';
 import { UserModel } from './models/user.model';
+import { throwException } from 'src/common/exceptions/error-handler';
+import { INCORRECT_PASSWORD, USER_NOT_FOUND } from 'src/common/constants/users';
 
 @Injectable()
 export class UsersService {
@@ -15,7 +17,7 @@ export class UsersService {
     const newUser: UserModel = new User({
       id: uuid_v4(),
       login: createUserDto.login,
-      password: createUserDto.login,
+      password: createUserDto.password,
       version: 1,
       createdAt: date,
       updatedAt: date,
@@ -32,7 +34,7 @@ export class UsersService {
     const user: UserModel | null = this._db.users.find(
       (user: UserModel) => user.id === id,
     );
-    if (!user) throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    if (!user) throwException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     return user;
   }
 
@@ -42,9 +44,9 @@ export class UsersService {
       (user: UserModel) => user.id === id,
     );
     if (!user) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throwException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else if (user.password !== oldPassword) {
-      throw new HttpException('Incorrect old password', HttpStatus.FORBIDDEN);
+      throwException(INCORRECT_PASSWORD, HttpStatus.FORBIDDEN);
     } else {
       user.version += 1;
       user.updatedAt = Date.now();
@@ -58,7 +60,7 @@ export class UsersService {
       (user: UserModel) => user.id === id,
     );
     if (userIndex < 0) {
-      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      throwException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {
       this._db.users.splice(userIndex, 1);
       return null;

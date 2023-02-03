@@ -1,15 +1,27 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { InMemoryDB } from 'src/database/in-memory.db';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
 import { TrackModel } from './models/track.model';
 import { v4 as uuid_v4 } from 'uuid';
-import { TracksModule } from './tracks.module';
+import { FavoritesService } from '../favorites/favorites.service';
+import { throwException } from 'src/common/exceptions/error-handler';
+import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
 
 @Injectable()
 export class TracksService {
-  constructor(private _db: InMemoryDB) {}
+  constructor(
+    private _db: InMemoryDB,
+    @Inject(forwardRef(() => FavoritesService))
+    private _favsService: FavoritesService,
+  ) {}
 
   create(createTrackDto: CreateTrackDto): TrackModel {
     const track: TrackModel = new Track({
@@ -40,7 +52,7 @@ export class TracksService {
       (track: TrackModel) => track.id === id,
     );
     if (!track) {
-      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
+      throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {
       track.albumId = updateTrackDto.albumId;
       track.artistId = updateTrackDto.artistId;
@@ -55,15 +67,16 @@ export class TracksService {
       (track: TrackModel) => track.id === id,
     );
     if (trackIndex < 0) {
-      throw new HttpException('Track not found', HttpStatus.NOT_FOUND);
+      throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {
+      this._favsService.removeTrack(id, true);
       this._db.tracks.splice(trackIndex, 1);
       return null;
     }
   }
 
-  clearAlbums(id: string) {
-    this._db.tracks = this._db.tracks.map((el: TrackModel) => {
+  clearAlbums(id: string): void {
+    const tracks = this._db.tracks.map((el: TrackModel) => {
       if (el.albumId === id) {
         return {
           ...el,
@@ -73,5 +86,20 @@ export class TracksService {
         return el;
       }
     });
+    this._db.tracks = tracks;
+  }
+
+  clearArtists(id: string): void {
+    const tracks = this._db.tracks.map((el: TrackModel) => {
+      if (el.artistId === id) {
+        return {
+          ...el,
+          artistId: null,
+        };
+      } else {
+        return el;
+      }
+    });
+    this._db.tracks = tracks;
   }
 }

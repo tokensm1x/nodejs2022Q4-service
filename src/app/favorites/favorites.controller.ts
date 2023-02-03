@@ -46,7 +46,7 @@ export class FavoritesController {
   removeTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): null {
-    return this.favoritsService.removeTrack(id);
+    return this.favoritsService.removeTrack(id, false);
   }
 
   @Delete('/album/:id')
@@ -54,7 +54,7 @@ export class FavoritesController {
   removeAlbum(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): null {
-    return this.favoritsService.removeAlbum(id);
+    return this.favoritsService.removeAlbum(id, false);
   }
 
   @Delete('/artist/:id')
@@ -62,6 +62,6 @@ export class FavoritesController {
   removeArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): null {
-    return this.favoritsService.removeArtist(id);
+    return this.favoritsService.removeArtist(id, false);
   }
 }
