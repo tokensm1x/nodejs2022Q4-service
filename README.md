@@ -23,9 +23,13 @@ npm install
 npm start
 ```
 
-After starting the app on port (4000 as default) you can open
-in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
-For more information about OpenAPI/Swagger please visit https://swagger.io/.
+## Port
+
+Default port: 4000
+
+## Swagger
+
+http://localhost:4000/doc/.
 
 ## Testing
 
@@ -68,5 +72,3 @@ npm run format
 ### Debugging in VSCode
 
 Press <kbd>F5</kbd> to debug.
-
-For more information, visit: https://code.visualstudio.com/docs/editor/debugging
