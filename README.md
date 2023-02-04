@@ -22,6 +22,14 @@ npm run start
 npm run start:dev
 ```
 
+```
+npm run start:prod
+```
+
+```
+npm run start:debug
+```
+
 ## Port
 
 Default port: 4000
