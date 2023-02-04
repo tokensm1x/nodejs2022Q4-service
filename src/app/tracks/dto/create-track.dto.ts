@@ -5,6 +5,8 @@ import {
   Min,
   Max,
   IsInt,
+  IsUUID,
+  IsOptional,
 } from 'class-validator';
 
 export class CreateTrackDto {
@@ -12,11 +14,13 @@ export class CreateTrackDto {
   @IsNotEmpty()
   name: string;
 
-  @IsString()
+  @IsOptional()
+  @IsUUID()
   @ValidateIf((_, value) => value !== null)
   artistId: string | null;
 
-  @IsString()
+  @IsOptional()
+  @IsUUID()
   @ValidateIf((_, value) => value !== null)
   albumId: string | null;
 

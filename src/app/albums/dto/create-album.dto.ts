@@ -5,6 +5,8 @@ import {
   ValidateIf,
   Min,
   Max,
+  IsOptional,
+  IsUUID,
 } from 'class-validator';
 
 export class CreateAlbumDto {
@@ -17,7 +19,8 @@ export class CreateAlbumDto {
   @Max(new Date().getFullYear())
   year: number;
 
-  @IsString()
+  @IsOptional()
+  @IsUUID()
   @ValidateIf((_, value) => value !== null)
   artistId: string | null;
 }

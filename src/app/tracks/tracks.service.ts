@@ -21,8 +21,8 @@ export class TracksService {
     const track: TrackModel = new Track({
       id: uuid_v4(),
       name: createTrackDto.name,
-      albumId: createTrackDto.albumId,
-      artistId: createTrackDto.artistId,
+      albumId: createTrackDto.albumId || null,
+      artistId: createTrackDto.artistId || null,
       duration: createTrackDto.duration,
     });
     this._db.tracks.push(track);
