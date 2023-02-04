@@ -15,7 +15,11 @@ npm install
 ## Running application
 
 ```
-npm start
+npm run start
+```
+
+```
+npm run start:dev
 ```
 
 ## Port
