@@ -36,7 +36,7 @@ Default port: 4000
 
 ## Swagger
 
-http://localhost:4000/doc/.
+http://localhost:4000/doc/
 
 ## Testing
 
