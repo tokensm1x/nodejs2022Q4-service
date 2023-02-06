@@ -10,6 +10,7 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Put,
+  Header,
 } from '@nestjs/common';
 import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
 import { throwException } from 'src/common/exceptions/error-handler';
@@ -23,18 +24,21 @@ export class ArtistsController {
   constructor(private readonly artistsService: ArtistsService) {}
 
   @Post()
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
   create(@Body(ValidationPipe) createArtistDto: CreateArtistDto): ArtistModel {
     return this.artistsService.create(createArtistDto);
   }
 
   @Get()
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   findAll(): ArtistModel[] {
     return this.artistsService.findAll();
   }
 
   @Get(':id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     const artist = this.artistsService.findOne(id);
@@ -43,6 +47,7 @@ export class ArtistsController {
   }
 
   @Put(':id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,

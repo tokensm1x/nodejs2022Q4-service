@@ -11,7 +11,7 @@ import { ArtistsService } from '../artists/artists.service';
 import { ArtistModel } from '../artists/models/artist.model';
 import { TrackModel } from '../tracks/models/track.model';
 import { TracksService } from '../tracks/tracks.service';
-import { FavoritesResModel } from './models/favorites.model';
+import { FavoritesResModel, SuccessResponse } from './models/favorites.model';
 
 @Injectable()
 export class FavoritesService {
@@ -42,7 +42,7 @@ export class FavoritesService {
     };
   }
 
-  addTrack(id) {
+  addTrack(id): SuccessResponse {
     const track = this._trackService.findOne(id);
     if (!track)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -50,7 +50,7 @@ export class FavoritesService {
     return { message: ADDED_SUCCESSFULLY };
   }
 
-  addAlbum(id) {
+  addAlbum(id): SuccessResponse {
     const album = this._albumService.findOne(id);
     if (!album)
       throwException(ALBUM_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -58,7 +58,7 @@ export class FavoritesService {
     return { message: ADDED_SUCCESSFULLY };
   }
 
-  addArtist(id) {
+  addArtist(id): SuccessResponse {
     const artist = this._artistService.findOne(id);
     if (!artist)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);

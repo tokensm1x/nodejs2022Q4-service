@@ -10,6 +10,7 @@ import {
   HttpCode,
   HttpStatus,
   Put,
+  Header,
 } from '@nestjs/common';
 import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
 import { throwException } from 'src/common/exceptions/error-handler';
@@ -23,18 +24,21 @@ export class AlbumsController {
   constructor(private readonly albumsService: AlbumsService) {}
 
   @Post()
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
   create(@Body(ValidationPipe) createAlbumDto: CreateAlbumDto): AlbumModel {
     return this.albumsService.create(createAlbumDto);
   }
 
   @Get()
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   findAll(): AlbumModel[] {
     return this.albumsService.findAll();
   }
 
   @Get(':id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
@@ -45,6 +49,7 @@ export class AlbumsController {
   }
 
   @Put(':id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,

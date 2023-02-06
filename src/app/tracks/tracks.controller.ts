@@ -10,6 +10,7 @@ import {
   HttpCode,
   HttpStatus,
   Put,
+  Header,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
@@ -24,17 +25,20 @@ export class TracksController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
+  @Header('Content-Type', 'application/json')
   create(@Body(ValidationPipe) createTrackDto: CreateTrackDto) {
     return this.tracksService.create(createTrackDto);
   }
 
   @Get()
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   findAll(): TrackModel[] {
     return this.tracksService.findAll();
   }
 
   @Get(':id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
@@ -45,6 +49,7 @@ export class TracksController {
   }
 
   @Put(':id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,

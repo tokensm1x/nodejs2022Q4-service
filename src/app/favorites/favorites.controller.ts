@@ -7,6 +7,7 @@ import {
   HttpCode,
   HttpStatus,
   ParseUUIDPipe,
+  Header,
 } from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { FavoritesResModel } from './models/favorites.model';
@@ -16,24 +17,28 @@ export class FavoritesController {
   constructor(private readonly favoritsService: FavoritesService) {}
 
   @Get()
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
   findAll(): FavoritesResModel {
     return this.favoritsService.findAll();
   }
 
   @Post('/track/:id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
   addTrack(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.favoritsService.addTrack(id);
   }
 
   @Post('/album/:id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
   addAlbum(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.favoritsService.addAlbum(id);
   }
 
   @Post('/artist/:id')
+  @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
   addArtist(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
     return this.favoritsService.addArtist(id);

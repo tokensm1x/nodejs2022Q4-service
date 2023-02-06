@@ -13,3 +13,7 @@ export interface FavoritesResModel {
   albums: AlbumModel[]; // favorite albums ids
   tracks: TrackModel[]; // favorite tracks ids
 }
+
+export interface SuccessResponse {
+  message: string;
+}
