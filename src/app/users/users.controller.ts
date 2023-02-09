@@ -18,6 +18,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserModel } from './models/user.model';
+import { User } from './entities/user.entity';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('user')
@@ -27,14 +28,14 @@ export class UsersController {
   @Post()
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
-  create(@Body(ValidationPipe) createUserDto: CreateUserDto): UserModel {
+  create(@Body(ValidationPipe) createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
   @Get()
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  findAll(): UserModel[] {
+  findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
@@ -43,7 +44,7 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): UserModel {
+  ): Promise<User> {
     return this.usersService.findOne(id);
   }
 
@@ -53,13 +54,15 @@ export class UsersController {
   update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body(ValidationPipe) updateUserDto: UpdateUserDto,
-  ): UserModel {
+  ): Promise<User> {
     return this.usersService.update(id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): null {
+  remove(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): Promise<null> {
     return this.usersService.remove(id);
   }
 }
