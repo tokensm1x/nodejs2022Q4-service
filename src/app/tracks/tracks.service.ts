@@ -8,6 +8,8 @@ import { v4 as uuid_v4 } from 'uuid';
 import { FavoritesService } from '../favorites/favorites.service';
 import { throwException } from 'src/common/exceptions/error-handler';
 import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class TracksService {
@@ -15,6 +17,8 @@ export class TracksService {
     private _db: InMemoryDB,
     @Inject(forwardRef(() => FavoritesService))
     private _favsService: FavoritesService,
+    @InjectRepository(Track)
+    private readonly trackRepository: Repository<Track>,
   ) {}
 
   create(createTrackDto: CreateTrackDto): TrackModel {

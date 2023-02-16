@@ -1,10 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { InMemoryDB } from 'src/database/in-memory.db';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { v4 as uuid_v4 } from 'uuid';
-import { UserModel } from './models/user.model';
 import { throwException } from 'src/common/exceptions/error-handler';
 import { INCORRECT_PASSWORD, USER_NOT_FOUND } from 'src/common/constants/users';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +10,6 @@ import { DeleteResult, Repository } from 'typeorm';
 @Injectable()
 export class UsersService {
   constructor(
-    private _db: InMemoryDB,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
@@ -52,7 +48,7 @@ export class UsersService {
   }
 
   async remove(id: string): Promise<null> {
-    let result: DeleteResult = await this.userRepository.delete({ id });
+    const result: DeleteResult = await this.userRepository.delete({ id });
     if (result.affected) {
       return null;
     } else {

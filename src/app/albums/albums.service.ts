@@ -9,6 +9,8 @@ import { TracksService } from '../tracks/tracks.service';
 import { FavoritesService } from '../favorites/favorites.service';
 import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
 import { throwException } from 'src/common/exceptions/error-handler';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class AlbumsService {
@@ -18,6 +20,8 @@ export class AlbumsService {
     private _trackService: TracksService,
     @Inject(forwardRef(() => FavoritesService))
     private _favsService: FavoritesService,
+    @InjectRepository(Album)
+    private readonly albumRepository: Repository<Album>,
   ) {}
 
   create(createAlbumDto: CreateAlbumDto): AlbumModel {
