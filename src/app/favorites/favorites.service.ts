@@ -55,6 +55,7 @@ export class FavoritesService {
   }
 
   addTrack(id): SuccessResponse {
+    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const track = this._trackService.findOne(id);
     if (!track)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -63,6 +64,7 @@ export class FavoritesService {
   }
 
   addAlbum(id): SuccessResponse {
+    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const album = this._albumService.findOne(id);
     if (!album)
       throwException(ALBUM_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -71,6 +73,7 @@ export class FavoritesService {
   }
 
   addArtist(id): SuccessResponse {
+    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const artist = this._artistService.findOne(id);
     if (!artist)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
@@ -79,6 +82,7 @@ export class FavoritesService {
   }
 
   removeTrack(id, isDeleted): null {
+    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const trackIndex: number = this._db.favorites.tracks.findIndex(
       (track: string) => track === id,
     );
@@ -91,6 +95,7 @@ export class FavoritesService {
   }
 
   removeAlbum(id, isDeleted): null {
+    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const albumIndex: number = this._db.favorites.albums.findIndex(
       (album: string) => album === id,
     );
@@ -103,6 +108,7 @@ export class FavoritesService {
   }
 
   removeArtist(id, isDeleted): null {
+    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const artistIndex: number = this._db.favorites.artists.findIndex(
       (artist: string) => artist === id,
     );

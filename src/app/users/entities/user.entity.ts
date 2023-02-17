@@ -31,8 +31,4 @@ export class User {
   @UpdateDateColumn({ type: 'timestamp' })
   @Transform(({ value }) => new Date(value).getTime())
   updatedAt: number;
-
-  constructor(user: UserModel) {
-    Object.assign(this, user);
-  }
 }

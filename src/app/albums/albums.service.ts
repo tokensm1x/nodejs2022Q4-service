@@ -25,12 +25,12 @@ export class AlbumsService {
 
   async create(createAlbumDto: CreateAlbumDto): Promise<Album> {
     try {
-      const album: Album = await this.albumRepository.save({
+      const album: Album = this.albumRepository.create({
         artistId: createAlbumDto.artistId || null,
         name: createAlbumDto.name,
         year: createAlbumDto.year,
       });
-      return album;
+      return await this.albumRepository.save(album);
     } catch (e) {
       throwException(e, 400);
     }
@@ -42,7 +42,7 @@ export class AlbumsService {
 
   async findOne(id: string): Promise<Album | null> {
     const album: Album | null = await this.albumRepository.findOneBy({ id });
-    if (!album) return null;
+    if (!album) throwException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     return album;
   }
 

@@ -27,19 +27,20 @@ export class ArtistsService {
   ) {}
 
   async create(createArtistDto: CreateArtistDto): Promise<Artist> {
-    return await this.artistRepository.save({
+    const artist: Artist = this.artistRepository.create({
       name: createArtistDto.name,
       grammy: createArtistDto.grammy,
     });
+    return await this.artistRepository.save(artist);
   }
 
   async findAll(): Promise<Artist[]> {
     return await this.artistRepository.find();
   }
 
-  async findOne(id: string): Promise<Artist | null> {
+  async findOne(id: string): Promise<Artist> {
     const artist: Artist = await this.artistRepository.findOneBy({ id });
-    if (!artist) return null;
+    if (!artist) throwException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     return artist;
   }
 

@@ -46,9 +46,7 @@ export class ArtistsController {
   async findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Promise<Artist> {
-    const artist = await this.artistsService.findOne(id);
-    if (!artist) throwException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
-    return artist;
+    return await this.artistsService.findOne(id);
   }
 
   @Put(':id')

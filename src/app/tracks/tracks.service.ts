@@ -22,13 +22,13 @@ export class TracksService {
 
   async create(createTrackDto: CreateTrackDto): Promise<Track> {
     try {
-      const track: Track = await this.trackRepository.save({
+      const track: Track = this.trackRepository.create({
         name: createTrackDto.name,
         albumId: createTrackDto.albumId || null,
         artistId: createTrackDto.artistId || null,
         duration: createTrackDto.duration,
       });
-      return track;
+      return await this.trackRepository.save(track);
     } catch (e) {
       throwException(e, 400);
     }
@@ -38,9 +38,9 @@ export class TracksService {
     return await this.trackRepository.find();
   }
 
-  async findOne(id: string): Promise<Track | null> {
+  async findOne(id: string): Promise<Track> {
     const track: Track | null = await this.trackRepository.findOneBy({ id });
-    if (!track) return null;
+    if (!track) throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     return track;
   }
 
