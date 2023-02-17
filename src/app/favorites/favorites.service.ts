@@ -8,9 +8,12 @@ import { throwException } from 'src/common/exceptions/error-handler';
 import { InMemoryDB } from 'src/database/in-memory.db';
 import { Repository } from 'typeorm';
 import { AlbumsService } from '../albums/albums.service';
+import { Album } from '../albums/entities/album.entity';
 import { AlbumModel } from '../albums/models/album.model';
 import { ArtistsService } from '../artists/artists.service';
+import { Artist } from '../artists/entities/artist.entity';
 import { ArtistModel } from '../artists/models/artist.model';
+import { Track } from '../tracks/entities/track.entity';
 import { TrackModel } from '../tracks/models/track.model';
 import { TracksService } from '../tracks/tracks.service';
 import { Favorites } from './entities/favorites.entity';
@@ -19,15 +22,14 @@ import { FavoritesResModel, SuccessResponse } from './models/favorites.model';
 @Injectable()
 export class FavoritesService {
   constructor(
-    private _db: InMemoryDB,
-    @Inject(forwardRef(() => ArtistsService))
-    private _artistService: ArtistsService,
-    @Inject(forwardRef(() => TracksService))
-    private _trackService: TracksService,
-    @Inject(forwardRef(() => AlbumsService))
-    private _albumService: AlbumsService,
     @InjectRepository(Favorites)
     private readonly favoritesRepository: Repository<Favorites>,
+    @InjectRepository(Track)
+    private readonly tracksRepository: Repository<Track>,
+    @InjectRepository(Album)
+    private readonly albumsRepository: Repository<Album>,
+    @InjectRepository(Artist)
+    private readonly artistsRepository: Repository<Artist>,
   ) {}
 
   async createRecord(): Promise<Favorites> {
@@ -61,7 +63,7 @@ export class FavoritesService {
 
   async addTrack(id): Promise<SuccessResponse> {
     const favs: Favorites = await this.createRecord();
-    const track = await this._trackService.findOne(id);
+    const track: Track = await this.tracksRepository.findOneBy({ id });
     if (!track)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     favs.tracks.push(track);
@@ -71,7 +73,7 @@ export class FavoritesService {
 
   async addAlbum(id): Promise<SuccessResponse> {
     const favs: Favorites = await this.createRecord();
-    const album = await this._albumService.findOne(id);
+    const album: Album = await this.albumsRepository.findOneBy({ id });
     if (!album)
       throwException(ALBUM_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     favs.albums.push(album);
@@ -81,7 +83,7 @@ export class FavoritesService {
 
   async addArtist(id): Promise<SuccessResponse> {
     const favs: Favorites = await this.createRecord();
-    const artist = await this._artistService.findOne(id);
+    const artist: Artist = await this.artistsRepository.findOneBy({ id });
     if (!artist)
       throwException(ARTIST_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     favs.artists.push(artist);
@@ -89,42 +91,49 @@ export class FavoritesService {
     return { message: ADDED_SUCCESSFULLY };
   }
 
-  async removeTrack(id, isDeleted): Promise<null> {
-    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    const trackIndex: number = this._db.favorites.tracks.findIndex(
-      (track: string) => track === id,
-    );
-    if (trackIndex < 0 && !isDeleted) {
+  async removeTrack(id): Promise<null> {
+    const favs: Favorites = await this.createRecord();
+    const track: Track = favs.tracks.find((el: Track) => el.id === id);
+    if (!track) {
       throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
-    } else if (trackIndex >= 0) {
-      this._db.favorites.tracks.splice(trackIndex, 1);
+    } else {
+      favs.tracks = favs.tracks.filter((el: Track) => el.id !== id);
+      await this.favoritesRepository.save(favs);
+      return null;
     }
-    return null;
+
+    // const trackIndex: number = this._db.favorites.tracks.findIndex(
+    //   (track: string) => track === id,
+    // );
+    // if (trackIndex < 0 && !isDeleted) {
+    //   throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
+    // } else if (trackIndex >= 0) {
+    //   this._db.favorites.tracks.splice(trackIndex, 1);
+    // }
+    // return null;
   }
 
-  async removeAlbum(id, isDeleted): Promise<null> {
-    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    const albumIndex: number = this._db.favorites.albums.findIndex(
-      (album: string) => album === id,
-    );
-    if (albumIndex < 0 && !isDeleted) {
+  async removeAlbum(id): Promise<null> {
+    const favs: Favorites = await this.createRecord();
+    const album: Album = favs.albums.find((el: Album) => el.id === id);
+    if (!album) {
       throwException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
-    } else if (albumIndex >= 0) {
-      this._db.favorites.albums.splice(albumIndex, 1);
+    } else {
+      favs.albums = favs.albums.filter((el: Album) => el.id !== id);
+      await this.favoritesRepository.save(favs);
+      return null;
     }
-    return null;
   }
 
-  async removeArtist(id, isDeleted): Promise<null> {
-    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    const artistIndex: number = this._db.favorites.artists.findIndex(
-      (artist: string) => artist === id,
-    );
-    if (artistIndex < 0 && !isDeleted) {
+  async removeArtist(id): Promise<null> {
+    const favs: Favorites = await this.createRecord();
+    const artist: Artist = favs.artists.find((el: Artist) => el.id === id);
+    if (!artist) {
       throwException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
-    } else if (artistIndex >= 0) {
-      this._db.favorites.artists.splice(artistIndex, 1);
+    } else {
+      favs.artists = favs.artists.filter((el: Artist) => el.id !== id);
+      await this.favoritesRepository.save(favs);
+      return null;
     }
-    return null;
   }
 }

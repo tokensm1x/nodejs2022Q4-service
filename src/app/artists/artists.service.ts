@@ -16,12 +16,6 @@ import { DeleteResult, Repository } from 'typeorm';
 @Injectable()
 export class ArtistsService {
   constructor(
-    @Inject(forwardRef(() => AlbumsService))
-    private _albumService: AlbumsService,
-    @Inject(forwardRef(() => TracksService))
-    private _trackService: TracksService,
-    @Inject(forwardRef(() => FavoritesService))
-    private _favsService: FavoritesService,
     @InjectRepository(Artist)
     private readonly artistRepository: Repository<Artist>,
   ) {}

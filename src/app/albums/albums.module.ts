@@ -8,11 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Album } from './entities/album.entity';
 
 @Module({
-  imports: [
-    forwardRef(() => TracksModule),
-    forwardRef(() => FavoritesModule),
-    TypeOrmModule.forFeature([Album]),
-  ],
+  imports: [TypeOrmModule.forFeature([Album])],
   controllers: [AlbumsController],
   providers: [AlbumsService],
   exports: [AlbumsService],
