@@ -12,14 +12,14 @@ export class Track {
   @Column({ type: 'varchar', length: '256' })
   name: string;
 
+  @Column({ type: 'decimal' })
+  duration: number;
+
   @Column({ type: 'uuid', nullable: true })
   artistId: string | null;
 
   @Column({ type: 'uuid', nullable: true })
   albumId: string | null;
-
-  @Column({ type: 'decimal' })
-  duration: number;
 
   @ManyToOne(() => Artist, (artist) => artist.id, {
     nullable: true,

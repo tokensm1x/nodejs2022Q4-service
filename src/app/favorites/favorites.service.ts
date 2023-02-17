@@ -5,7 +5,6 @@ import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
 import { ADDED_SUCCESSFULLY } from 'src/common/constants/favorites';
 import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
 import { throwException } from 'src/common/exceptions/error-handler';
-import { InMemoryDB } from 'src/database/in-memory.db';
 import { Repository } from 'typeorm';
 import { AlbumsService } from '../albums/albums.service';
 import { Album } from '../albums/entities/album.entity';

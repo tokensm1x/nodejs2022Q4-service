@@ -1,5 +1,4 @@
 import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { InMemoryDB } from 'src/database/in-memory.db';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
@@ -22,9 +21,9 @@ export class TracksService {
     try {
       const track: Track = this.trackRepository.create({
         name: createTrackDto.name,
-        albumId: createTrackDto.albumId || null,
-        artistId: createTrackDto.artistId || null,
         duration: createTrackDto.duration,
+        artistId: createTrackDto.artistId || null,
+        albumId: createTrackDto.albumId || null,
       });
       return await this.trackRepository.save(track);
     } catch (e) {

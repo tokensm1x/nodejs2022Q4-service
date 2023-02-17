@@ -6,7 +6,6 @@ import { TracksModule } from './app/tracks/tracks.module';
 import { AlbumsModule } from './app/albums/albums.module';
 import { ArtistsModule } from './app/artists/artists.module';
 import { FavoritesModule } from './app/favorites/favorites.module';
-import { DatabaseModule } from './database/database.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import 'dotenv/config';
 import { User } from './app/users/entities/user.entity';
@@ -22,7 +21,6 @@ import { Favorites } from './app/favorites/entities/favorites.entity';
     AlbumsModule,
     ArtistsModule,
     FavoritesModule,
-    DatabaseModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       username: process.env.POSTGRES_USERNAME,

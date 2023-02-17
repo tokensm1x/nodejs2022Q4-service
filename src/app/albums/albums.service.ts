@@ -1,5 +1,4 @@
 import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { InMemoryDB } from 'src/database/in-memory.db';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
