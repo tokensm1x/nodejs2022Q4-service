@@ -1,5 +1,12 @@
 import { Artist } from 'src/app/artists/entities/artist.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Track } from 'src/app/tracks/entities/track.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { AlbumModel } from '../models/album.model';
 
 @Entity('albums')
@@ -13,10 +20,12 @@ export class Album {
   @Column({ type: 'int' })
   year: number;
 
-  @ManyToOne(() => Artist, (artist) => artist.id, { nullable: true })
+  @ManyToOne(() => Artist, (artist) => artist.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   artistId: string | null;
 
-  constructor(album: AlbumModel) {
-    Object.assign(this, album);
-  }
+  @OneToMany(() => Track, (track) => track.albumId)
+  tracks: Track[];
 }

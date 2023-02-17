@@ -10,7 +10,6 @@ import { Artist } from './entities/artist.entity';
 
 @Module({
   imports: [
-    DatabaseModule,
     forwardRef(() => FavoritesModule),
     forwardRef(() => TracksModule),
     forwardRef(() => AlbumsModule),

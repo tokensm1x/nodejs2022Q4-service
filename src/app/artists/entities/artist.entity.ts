@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Album } from 'src/app/albums/entities/album.entity';
+import { Track } from 'src/app/tracks/entities/track.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ArtistModel } from '../models/artist.model';
 
 @Entity('artists')
@@ -12,7 +14,9 @@ export class Artist {
   @Column({ type: 'bool' })
   grammy: boolean;
 
-  constructor(artist: ArtistModel) {
-    Object.assign(this, artist);
-  }
+  @OneToMany(() => Album, (album) => album.artistId)
+  albums: Album[];
+
+  @OneToMany(() => Track, (track) => track.artistId)
+  tracks: Album[];
 }

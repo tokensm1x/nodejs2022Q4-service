@@ -1,16 +1,19 @@
 import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
 import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
 import { ADDED_SUCCESSFULLY } from 'src/common/constants/favorites';
 import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
 import { throwException } from 'src/common/exceptions/error-handler';
 import { InMemoryDB } from 'src/database/in-memory.db';
+import { Repository } from 'typeorm';
 import { AlbumsService } from '../albums/albums.service';
 import { AlbumModel } from '../albums/models/album.model';
 import { ArtistsService } from '../artists/artists.service';
 import { ArtistModel } from '../artists/models/artist.model';
 import { TrackModel } from '../tracks/models/track.model';
 import { TracksService } from '../tracks/tracks.service';
+import { Favorites } from './entities/favorites.entity';
 import { FavoritesResModel, SuccessResponse } from './models/favorites.model';
 
 @Injectable()
@@ -23,30 +26,39 @@ export class FavoritesService {
     private _trackService: TracksService,
     @Inject(forwardRef(() => AlbumsService))
     private _albumService: AlbumsService,
+    @InjectRepository(Favorites)
+    private readonly favoritesRepository: Repository<Favorites>,
   ) {}
 
-  findAll(): FavoritesResModel {
-    const albums: AlbumModel[] = this._db.albums.filter((el: AlbumModel) =>
-      this._db.favorites.albums.includes(el.id),
-    );
-    const artists: ArtistModel[] = this._db.artists.filter((el: ArtistModel) =>
-      this._db.favorites.artists.includes(el.id),
-    );
-    const tracks: TrackModel[] = this._db.tracks.filter((el: TrackModel) =>
-      this._db.favorites.tracks.includes(el.id),
-    );
-    return {
-      albums,
-      tracks,
-      artists,
-    };
+  async findAll(): Promise<any> {
+    // const albums: AlbumModel[] = this._db.albums.filter((el: AlbumModel) =>
+    //   this._db.favorites.albums.includes(el.id),
+    // );
+    // const artists: ArtistModel[] = this._db.artists.filter((el: ArtistModel) =>
+    //   this._db.favorites.artists.includes(el.id),
+    // );
+    // const tracks: TrackModel[] = this._db.tracks.filter((el: TrackModel) =>
+    //   this._db.favorites.tracks.includes(el.id),
+    // );
+    // return {
+    //   albums,
+    //   tracks,
+    //   artists,
+    // };
+    return await this.favoritesRepository.find({
+      relations: {
+        tracks: true,
+        albums: true,
+        artists: true,
+      },
+    });
   }
 
   addTrack(id): SuccessResponse {
     const track = this._trackService.findOne(id);
     if (!track)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    this._db.favorites.tracks.push(track.id);
+    // this._db.favorites.tracks.push(track.id);
     return { message: ADDED_SUCCESSFULLY };
   }
 
@@ -54,7 +66,7 @@ export class FavoritesService {
     const album = this._albumService.findOne(id);
     if (!album)
       throwException(ALBUM_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    this._db.favorites.albums.push(album.id);
+    // this._db.favorites.albums.push(album.id);
     return { message: ADDED_SUCCESSFULLY };
   }
 
@@ -62,7 +74,7 @@ export class FavoritesService {
     const artist = this._artistService.findOne(id);
     if (!artist)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    this._db.favorites.artists.push(artist.id);
+    // this._db.favorites.artists.push(artist.id);
     return { message: ADDED_SUCCESSFULLY };
   }
 

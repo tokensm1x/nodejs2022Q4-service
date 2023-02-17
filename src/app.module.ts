@@ -13,6 +13,7 @@ import { User } from './app/users/entities/user.entity';
 import { Track } from './app/tracks/entities/track.entity';
 import { Album } from './app/albums/entities/album.entity';
 import { Artist } from './app/artists/entities/artist.entity';
+import { Favorites } from './app/favorites/entities/favorites.entity';
 
 @Module({
   imports: [
@@ -30,7 +31,7 @@ import { Artist } from './app/artists/entities/artist.entity';
       host: process.env.POSTGRES_HOST,
       port: +process.env.POSTGRES_PORT,
       autoLoadEntities: true,
-      entities: [User, Track, Album, Artist],
+      entities: [User, Track, Album, Artist, Favorites],
       synchronize: true,
       logging: true,
     }),

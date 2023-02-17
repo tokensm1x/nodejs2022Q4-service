@@ -11,16 +11,18 @@ export class Track {
   @Column({ type: 'varchar', length: '256' })
   name: string;
 
-  @ManyToOne(() => Artist, (artist) => artist.id, { nullable: true })
+  @ManyToOne(() => Artist, (artist) => artist.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   artistId: string | null;
 
-  @ManyToOne(() => Album, (album) => album.id, { nullable: true })
+  @ManyToOne(() => Album, (album) => album.id, {
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   albumId: string | null;
 
   @Column({ type: 'decimal' })
   duration: number;
-
-  constructor(track: TrackModel) {
-    Object.assign(this, track);
-  }
 }

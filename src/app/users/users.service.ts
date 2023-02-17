@@ -43,7 +43,7 @@ export class UsersService {
       throwException(INCORRECT_PASSWORD, HttpStatus.FORBIDDEN);
     } else {
       user.password = newPassword;
-      return this.userRepository.save(user);
+      return await this.userRepository.save(user);
     }
   }
 

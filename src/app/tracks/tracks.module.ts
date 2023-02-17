@@ -8,7 +8,6 @@ import { Track } from './entities/track.entity';
 
 @Module({
   imports: [
-    DatabaseModule,
     forwardRef(() => FavoritesModule),
     TypeOrmModule.forFeature([Track]),
   ],

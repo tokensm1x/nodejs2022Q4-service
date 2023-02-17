@@ -11,7 +11,6 @@ import { Album } from './entities/album.entity';
   imports: [
     forwardRef(() => TracksModule),
     forwardRef(() => FavoritesModule),
-    DatabaseModule,
     TypeOrmModule.forFeature([Album]),
   ],
   controllers: [AlbumsController],

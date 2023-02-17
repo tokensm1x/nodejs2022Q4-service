@@ -17,6 +17,7 @@ import { throwException } from 'src/common/exceptions/error-handler';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
+import { Artist } from './entities/artist.entity';
 import { ArtistModel } from './models/artist.model';
 
 @Controller('artist')
@@ -26,22 +27,26 @@ export class ArtistsController {
   @Post()
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
-  create(@Body(ValidationPipe) createArtistDto: CreateArtistDto): ArtistModel {
-    return this.artistsService.create(createArtistDto);
+  async create(
+    @Body(ValidationPipe) createArtistDto: CreateArtistDto,
+  ): Promise<Artist> {
+    return await this.artistsService.create(createArtistDto);
   }
 
   @Get()
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  findAll(): ArtistModel[] {
-    return this.artistsService.findAll();
+  async findAll(): Promise<Artist[]> {
+    return await this.artistsService.findAll();
   }
 
   @Get(':id')
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  findOne(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    const artist = this.artistsService.findOne(id);
+  async findOne(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): Promise<Artist> {
+    const artist = await this.artistsService.findOne(id);
     if (!artist) throwException(ARTIST_NOT_FOUND, HttpStatus.NOT_FOUND);
     return artist;
   }
@@ -49,16 +54,18 @@ export class ArtistsController {
   @Put(':id')
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body(ValidationPipe) updateArtistDto: UpdateArtistDto,
-  ) {
-    return this.artistsService.update(id, updateArtistDto);
+  ): Promise<Artist> {
+    return await this.artistsService.update(id, updateArtistDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string) {
-    return this.artistsService.remove(id);
+  async remove(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): Promise<null> {
+    return await this.artistsService.remove(id);
   }
 }

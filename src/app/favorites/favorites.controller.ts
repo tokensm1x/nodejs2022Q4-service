@@ -14,13 +14,13 @@ import { FavoritesResModel, SuccessResponse } from './models/favorites.model';
 
 @Controller('favs')
 export class FavoritesController {
-  constructor(private readonly favoritsService: FavoritesService) {}
+  constructor(private readonly favoritesService: FavoritesService) {}
 
   @Get()
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  findAll(): FavoritesResModel {
-    return this.favoritsService.findAll();
+  findAll(): Promise<any> {
+    return this.favoritesService.findAll();
   }
 
   @Post('/track/:id')
@@ -29,7 +29,7 @@ export class FavoritesController {
   addTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): SuccessResponse {
-    return this.favoritsService.addTrack(id);
+    return this.favoritesService.addTrack(id);
   }
 
   @Post('/album/:id')
@@ -38,7 +38,7 @@ export class FavoritesController {
   addAlbum(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): SuccessResponse {
-    return this.favoritsService.addAlbum(id);
+    return this.favoritesService.addAlbum(id);
   }
 
   @Post('/artist/:id')
@@ -47,7 +47,7 @@ export class FavoritesController {
   addArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): SuccessResponse {
-    return this.favoritsService.addArtist(id);
+    return this.favoritesService.addArtist(id);
   }
 
   @Delete('/track/:id')
@@ -55,7 +55,7 @@ export class FavoritesController {
   removeTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): null {
-    return this.favoritsService.removeTrack(id, false);
+    return this.favoritesService.removeTrack(id, false);
   }
 
   @Delete('/album/:id')
@@ -63,7 +63,7 @@ export class FavoritesController {
   removeAlbum(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): null {
-    return this.favoritsService.removeAlbum(id, false);
+    return this.favoritesService.removeAlbum(id, false);
   }
 
   @Delete('/artist/:id')
@@ -71,6 +71,6 @@ export class FavoritesController {
   removeArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): null {
-    return this.favoritsService.removeArtist(id, false);
+    return this.favoritesService.removeArtist(id, false);
   }
 }
