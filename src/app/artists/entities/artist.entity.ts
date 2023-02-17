@@ -3,7 +3,7 @@ import { Track } from 'src/app/tracks/entities/track.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { ArtistModel } from '../models/artist.model';
 
-@Entity('artists')
+@Entity('Artist')
 export class Artist {
   @PrimaryGeneratedColumn('uuid')
   id: string;

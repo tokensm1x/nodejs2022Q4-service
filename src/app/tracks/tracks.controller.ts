@@ -11,6 +11,8 @@ import {
   HttpStatus,
   Put,
   Header,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
@@ -46,7 +48,9 @@ export class TracksController {
   async findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ): Promise<Track> {
-    return await this.tracksService.findOne(id);
+    const track = await this.tracksService.findOne(id);
+    if (!track) throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
+    return track;
   }
 
   @Put(':id')

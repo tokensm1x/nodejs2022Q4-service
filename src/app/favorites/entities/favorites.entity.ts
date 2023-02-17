@@ -1,3 +1,4 @@
+import { Exclude, Transform } from 'class-transformer';
 import { Album } from 'src/app/albums/entities/album.entity';
 import { AlbumModel } from 'src/app/albums/models/album.model';
 import { Artist } from 'src/app/artists/entities/artist.entity';
@@ -15,25 +16,27 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('favorites')
+@Entity('Favorites')
 export class Favorites {
-  //   @PrimaryGeneratedColumn('uuid')
-  //   id: string;
-  //   @PrimaryColumn('uuid', { array: true, default: [] })
   @PrimaryGeneratedColumn('uuid')
-  @ManyToMany(() => Artist)
+  @Exclude()
+  id: string;
+
+  @ManyToMany(() => Artist, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   artists: Artist[];
 
-  //   @PrimaryColumn('uuid', { array: true, default: [] })
-  @PrimaryGeneratedColumn('uuid')
-  @ManyToMany(() => Album)
+  @ManyToMany(() => Album, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   albums: Album[];
 
-  //   @PrimaryColumn('uuid', { array: true, default: [] })
-  @PrimaryGeneratedColumn('uuid')
-  @ManyToMany(() => Track)
+  @ManyToMany(() => Track, {
+    onDelete: 'CASCADE',
+  })
   @JoinTable()
   tracks: Track[];
 }

@@ -38,9 +38,9 @@ export class TracksService {
     return await this.trackRepository.find();
   }
 
-  async findOne(id: string): Promise<Track> {
+  async findOne(id: string): Promise<Track | null> {
     const track: Track | null = await this.trackRepository.findOneBy({ id });
-    if (!track) throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
+    if (!track) return null;
     return track;
   }
 

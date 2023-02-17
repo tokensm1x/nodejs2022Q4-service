@@ -7,9 +7,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { AlbumModel } from '../models/album.model';
 
-@Entity('albums')
+@Entity('Album')
 export class Album {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -20,11 +19,14 @@ export class Album {
   @Column({ type: 'int' })
   year: number;
 
+  @Column({ type: 'uuid', nullable: true })
+  artistId: string | null;
+
   @ManyToOne(() => Artist, (artist) => artist.id, {
     nullable: true,
     onDelete: 'SET NULL',
   })
-  artistId: string | null;
+  artist: Artist;
 
   @OneToMany(() => Track, (track) => track.albumId)
   tracks: Track[];

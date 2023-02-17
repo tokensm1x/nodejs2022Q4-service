@@ -8,10 +8,14 @@ import {
   HttpStatus,
   ParseUUIDPipe,
   Header,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
+import { Favorites } from './entities/favorites.entity';
 import { FavoritesService } from './favorites.service';
 import { FavoritesResModel, SuccessResponse } from './models/favorites.model';
 
+@UseInterceptors(ClassSerializerInterceptor)
 @Controller('favs')
 export class FavoritesController {
   constructor(private readonly favoritesService: FavoritesService) {}
@@ -19,8 +23,8 @@ export class FavoritesController {
   @Get()
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  findAll(): Promise<any> {
-    return this.favoritesService.findAll();
+  async findAll(): Promise<Favorites> {
+    return await this.favoritesService.findAll();
   }
 
   @Post('/track/:id')
@@ -28,7 +32,7 @@ export class FavoritesController {
   @HttpCode(HttpStatus.CREATED)
   addTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): SuccessResponse {
+  ): Promise<SuccessResponse> {
     return this.favoritesService.addTrack(id);
   }
 
@@ -37,16 +41,16 @@ export class FavoritesController {
   @HttpCode(HttpStatus.CREATED)
   addAlbum(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): SuccessResponse {
+  ): Promise<SuccessResponse> {
     return this.favoritesService.addAlbum(id);
   }
 
   @Post('/artist/:id')
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.CREATED)
-  addArtist(
+  async addArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): SuccessResponse {
+  ): Promise<SuccessResponse> {
     return this.favoritesService.addArtist(id);
   }
 
@@ -54,7 +58,7 @@ export class FavoritesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   removeTrack(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): null {
+  ): Promise<null> {
     return this.favoritesService.removeTrack(id, false);
   }
 
@@ -62,7 +66,7 @@ export class FavoritesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   removeAlbum(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): null {
+  ): Promise<null> {
     return this.favoritesService.removeAlbum(id, false);
   }
 
@@ -70,7 +74,7 @@ export class FavoritesController {
   @HttpCode(HttpStatus.NO_CONTENT)
   removeArtist(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): null {
+  ): Promise<null> {
     return this.favoritesService.removeArtist(id, false);
   }
 }

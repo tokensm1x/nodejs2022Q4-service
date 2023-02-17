@@ -30,58 +30,66 @@ export class FavoritesService {
     private readonly favoritesRepository: Repository<Favorites>,
   ) {}
 
-  async findAll(): Promise<any> {
-    // const albums: AlbumModel[] = this._db.albums.filter((el: AlbumModel) =>
-    //   this._db.favorites.albums.includes(el.id),
-    // );
-    // const artists: ArtistModel[] = this._db.artists.filter((el: ArtistModel) =>
-    //   this._db.favorites.artists.includes(el.id),
-    // );
-    // const tracks: TrackModel[] = this._db.tracks.filter((el: TrackModel) =>
-    //   this._db.favorites.tracks.includes(el.id),
-    // );
-    // return {
-    //   albums,
-    //   tracks,
-    //   artists,
-    // };
-    return await this.favoritesRepository.find({
-      relations: {
-        tracks: true,
-        albums: true,
-        artists: true,
-      },
+  async createRecord(): Promise<Favorites> {
+    const favs: Favorites[] = await this.favoritesRepository.find({
+      relations: ['artists', 'tracks', 'albums'],
     });
+    if (!favs.length) {
+      const newRecord: Favorites = this.favoritesRepository.create({
+        artists: [],
+        albums: [],
+        tracks: [],
+      });
+      const savedRecord: Favorites = await this.favoritesRepository.save(
+        newRecord,
+      );
+      return await this.favoritesRepository.findOne({
+        where: {
+          id: savedRecord.id,
+        },
+        relations: ['artists', 'tracks', 'albums'],
+      });
+    } else {
+      return favs[0];
+    }
   }
 
-  addTrack(id): SuccessResponse {
-    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    const track = this._trackService.findOne(id);
+  async findAll(): Promise<Favorites> {
+    const favs: Favorites = await this.createRecord();
+    return favs;
+  }
+
+  async addTrack(id): Promise<SuccessResponse> {
+    const favs: Favorites = await this.createRecord();
+    const track = await this._trackService.findOne(id);
     if (!track)
       throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    // this._db.favorites.tracks.push(track.id);
+    favs.tracks.push(track);
+    await this.favoritesRepository.save(favs);
     return { message: ADDED_SUCCESSFULLY };
   }
 
-  addAlbum(id): SuccessResponse {
-    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    const album = this._albumService.findOne(id);
+  async addAlbum(id): Promise<SuccessResponse> {
+    const favs: Favorites = await this.createRecord();
+    const album = await this._albumService.findOne(id);
     if (!album)
       throwException(ALBUM_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    // this._db.favorites.albums.push(album.id);
+    favs.albums.push(album);
+    await this.favoritesRepository.save(favs);
     return { message: ADDED_SUCCESSFULLY };
   }
 
-  addArtist(id): SuccessResponse {
-    throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    const artist = this._artistService.findOne(id);
+  async addArtist(id): Promise<SuccessResponse> {
+    const favs: Favorites = await this.createRecord();
+    const artist = await this._artistService.findOne(id);
     if (!artist)
-      throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
-    // this._db.favorites.artists.push(artist.id);
+      throwException(ARTIST_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
+    favs.artists.push(artist);
+    await this.favoritesRepository.save(favs);
     return { message: ADDED_SUCCESSFULLY };
   }
 
-  removeTrack(id, isDeleted): null {
+  async removeTrack(id, isDeleted): Promise<null> {
     throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const trackIndex: number = this._db.favorites.tracks.findIndex(
       (track: string) => track === id,
@@ -94,7 +102,7 @@ export class FavoritesService {
     return null;
   }
 
-  removeAlbum(id, isDeleted): null {
+  async removeAlbum(id, isDeleted): Promise<null> {
     throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const albumIndex: number = this._db.favorites.albums.findIndex(
       (album: string) => album === id,
@@ -107,7 +115,7 @@ export class FavoritesService {
     return null;
   }
 
-  removeArtist(id, isDeleted): null {
+  async removeArtist(id, isDeleted): Promise<null> {
     throwException(TRACK_NOT_FOUND, HttpStatus.UNPROCESSABLE_ENTITY);
     const artistIndex: number = this._db.favorites.artists.findIndex(
       (artist: string) => artist === id,
