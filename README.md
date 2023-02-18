@@ -9,7 +9,7 @@ git clone https://github.com/tokensm1x/nodejs2022Q4-service.git
 ## Installing NPM modules
 
 ```
-npm install
+npm install --legacy-peer-deps 
 ```
 
 ## Installing Docker
