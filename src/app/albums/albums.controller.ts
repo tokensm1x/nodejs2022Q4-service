@@ -12,13 +12,10 @@ import {
   Put,
   Header,
 } from '@nestjs/common';
-import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
-import { throwException } from 'src/common/exceptions/error-handler';
 import { AlbumsService } from './albums.service';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
-import { AlbumModel } from './models/album.model';
 
 @Controller('album')
 export class AlbumsController {

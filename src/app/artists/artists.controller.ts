@@ -12,13 +12,10 @@ import {
   Put,
   Header,
 } from '@nestjs/common';
-import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
-import { throwException } from 'src/common/exceptions/error-handler';
 import { ArtistsService } from './artists.service';
 import { CreateArtistDto } from './dto/create-artist.dto';
 import { UpdateArtistDto } from './dto/update-artist.dto';
 import { Artist } from './entities/artist.entity';
-import { ArtistModel } from './models/artist.model';
 
 @Controller('artist')
 export class ArtistsController {

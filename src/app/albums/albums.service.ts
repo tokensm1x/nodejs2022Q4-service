@@ -1,11 +1,7 @@
-import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateAlbumDto } from './dto/create-album.dto';
 import { UpdateAlbumDto } from './dto/update-album.dto';
 import { Album } from './entities/album.entity';
-import { AlbumModel } from './models/album.model';
-import { v4 as uuid_v4 } from 'uuid';
-import { TracksService } from '../tracks/tracks.service';
-import { FavoritesService } from '../favorites/favorites.service';
 import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
 import { throwException } from 'src/common/exceptions/error-handler';
 import { InjectRepository } from '@nestjs/typeorm';

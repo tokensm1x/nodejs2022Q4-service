@@ -1,10 +1,7 @@
-import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
 import { Track } from './entities/track.entity';
-import { TrackModel } from './models/track.model';
-import { v4 as uuid_v4 } from 'uuid';
-import { FavoritesService } from '../favorites/favorites.service';
 import { throwException } from 'src/common/exceptions/error-handler';
 import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -42,7 +39,7 @@ export class TracksService {
   }
 
   async update(id: string, updateTrackDto: UpdateTrackDto): Promise<Track> {
-    const track: TrackModel | null = await this.findOne(id);
+    const track: Track | null = await this.findOne(id);
     if (!track) {
       throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     } else {

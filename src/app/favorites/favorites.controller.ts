@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { Favorites } from './entities/favorites.entity';
 import { FavoritesService } from './favorites.service';
-import { FavoritesResModel, SuccessResponse } from './models/favorites.model';
+import { SuccessResponse } from './models/favorites.model';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('favs')

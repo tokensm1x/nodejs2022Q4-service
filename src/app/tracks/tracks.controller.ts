@@ -11,13 +11,10 @@ import {
   HttpStatus,
   Put,
   Header,
-  UseInterceptors,
-  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackModel } from './models/track.model';
 import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
 import { throwException } from 'src/common/exceptions/error-handler';
 import { Track } from './entities/track.entity';

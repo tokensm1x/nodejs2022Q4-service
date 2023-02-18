@@ -1,4 +1,4 @@
-import { forwardRef, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ALBUM_NOT_FOUND } from 'src/common/constants/albums';
 import { ARTIST_NOT_FOUND } from 'src/common/constants/artists';
@@ -6,17 +6,11 @@ import { ADDED_SUCCESSFULLY } from 'src/common/constants/favorites';
 import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
 import { throwException } from 'src/common/exceptions/error-handler';
 import { Repository } from 'typeorm';
-import { AlbumsService } from '../albums/albums.service';
 import { Album } from '../albums/entities/album.entity';
-import { AlbumModel } from '../albums/models/album.model';
-import { ArtistsService } from '../artists/artists.service';
 import { Artist } from '../artists/entities/artist.entity';
-import { ArtistModel } from '../artists/models/artist.model';
 import { Track } from '../tracks/entities/track.entity';
-import { TrackModel } from '../tracks/models/track.model';
-import { TracksService } from '../tracks/tracks.service';
 import { Favorites } from './entities/favorites.entity';
-import { FavoritesResModel, SuccessResponse } from './models/favorites.model';
+import { SuccessResponse } from './models/favorites.model';
 
 @Injectable()
 export class FavoritesService {
