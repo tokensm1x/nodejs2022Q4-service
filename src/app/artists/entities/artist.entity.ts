@@ -18,5 +18,5 @@ export class Artist {
   albums: Album[];
 
   @OneToMany(() => Track, (track) => track.artistId)
-  tracks: Album[];
+  tracks: Track[];
 }

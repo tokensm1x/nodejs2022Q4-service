@@ -12,7 +12,7 @@ export class Track {
   @Column({ type: 'varchar', length: '256' })
   name: string;
 
-  @Column({ type: 'decimal' })
+  @Column({ type: 'int' })
   duration: number;
 
   @Column({ type: 'uuid', nullable: true })
