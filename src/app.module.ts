@@ -13,6 +13,7 @@ import { Track } from './app/tracks/entities/track.entity';
 import { Album } from './app/albums/entities/album.entity';
 import { Artist } from './app/artists/entities/artist.entity';
 import { Favorites } from './app/favorites/entities/favorites.entity';
+import { dataSourceOptions } from 'db/data-source';
 
 @Module({
   imports: [
@@ -21,18 +22,7 @@ import { Favorites } from './app/favorites/entities/favorites.entity';
     AlbumsModule,
     ArtistsModule,
     FavoritesModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      host: process.env.POSTGRES_HOST,
-      port: +process.env.POSTGRES_PORT,
-      autoLoadEntities: true,
-      entities: [User, Track, Album, Artist, Favorites],
-      synchronize: true,
-      logging: true,
-    }),
+    TypeOrmModule.forRoot(dataSourceOptions),
   ],
   controllers: [AppController],
   providers: [AppService],
