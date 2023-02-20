@@ -8,11 +8,6 @@ import { ArtistsModule } from './app/artists/artists.module';
 import { FavoritesModule } from './app/favorites/favorites.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import 'dotenv/config';
-import { User } from './app/users/entities/user.entity';
-import { Track } from './app/tracks/entities/track.entity';
-import { Album } from './app/albums/entities/album.entity';
-import { Artist } from './app/artists/entities/artist.entity';
-import { Favorites } from './app/favorites/entities/favorites.entity';
 import { dataSourceOptions } from 'src/data-source';
 import { ConfigModule } from '@nestjs/config';
 
