@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres-container
+    build: 
+      dockerfile: ./db/Dockerfile
+      context: .
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    networks:
+     - mynetwork
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 5s
+      timeout: 5s
+      retries: 10 
+  nest:
+    container_name: nest-container
+    build: 
+      dockerfile: Dockerfile
+      context: .
+    depends_on:
+        postgres: 
+          condition: service_healthy
+    restart: always
+    environment:
+      - PORT=${PORT}
+    volumes:
+        - .:/app/
+        - /app/node_modules
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+     - mynetwork
+volumes:
+  pgdata:
+networks:
+   mynetwork:
+     driver: bridge

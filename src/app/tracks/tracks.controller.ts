@@ -15,9 +15,9 @@ import {
 import { TracksService } from './tracks.service';
 import { CreateTrackDto } from './dto/create-track.dto';
 import { UpdateTrackDto } from './dto/update-track.dto';
-import { TrackModel } from './models/track.model';
 import { TRACK_NOT_FOUND } from 'src/common/constants/tracks';
 import { throwException } from 'src/common/exceptions/error-handler';
+import { Track } from './entities/track.entity';
 
 @Controller('track')
 export class TracksController {
@@ -26,24 +26,26 @@ export class TracksController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Header('Content-Type', 'application/json')
-  create(@Body(ValidationPipe) createTrackDto: CreateTrackDto) {
-    return this.tracksService.create(createTrackDto);
+  async create(
+    @Body(ValidationPipe) createTrackDto: CreateTrackDto,
+  ): Promise<Track> {
+    return await this.tracksService.create(createTrackDto);
   }
 
   @Get()
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  findAll(): TrackModel[] {
-    return this.tracksService.findAll();
+  async findAll(): Promise<Track[]> {
+    return await this.tracksService.findAll();
   }
 
   @Get(':id')
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  findOne(
+  async findOne(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-  ): TrackModel {
-    const track = this.tracksService.findOne(id);
+  ): Promise<Track> {
+    const track = await this.tracksService.findOne(id);
     if (!track) throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
     return track;
   }
@@ -51,16 +53,18 @@ export class TracksController {
   @Put(':id')
   @Header('Content-Type', 'application/json')
   @HttpCode(HttpStatus.OK)
-  update(
+  async update(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
     @Body(ValidationPipe) updateTrackDto: UpdateTrackDto,
-  ): TrackModel {
-    return this.tracksService.update(id, updateTrackDto);
+  ): Promise<Track> {
+    return await this.tracksService.update(id, updateTrackDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', new ParseUUIDPipe({ version: '4' })) id: string): null {
-    return this.tracksService.remove(id);
+  async remove(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ): Promise<null> {
+    return await this.tracksService.remove(id);
   }
 }

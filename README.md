@@ -3,31 +3,42 @@
 ## Downloading
 
 ```
-git clone {repository URL}
+git clone https://github.com/tokensm1x/nodejs2022Q4-service.git
 ```
 
 ## Installing NPM modules
 
 ```
-npm install
+npm install --legacy-peer-deps 
 ```
+
+## Installing Docker
+
+Install [Docker](https://docs.docker.com/engine/install/)
 
 ## Running application
 
-```
-npm run start
-```
+Run Docker app, after application running enter in the terminal:
 
 ```
-npm run start:dev
+npm run start:docker
 ```
 
-```
-npm run start:prod
-```
+## Scanning for vulnerabilities
 
 ```
-npm run start:debug
+npm run docker:scan
+```
+
+## Downloading images from DockerHub
+
+Nest app
+```
+docker pull tokensmix/nodejs2022q4-service:nest
+```
+Postgres
+```
+docker pull tokensmix/nodejs2022q4-service:postgres
 ```
 
 ## Port
@@ -52,18 +63,6 @@ To run only one of all test suites
 
 ```
 npm run test -- <path to suite>
-```
-
-To run all test with authorization
-
-```
-npm run test:auth
-```
-
-To run only specific test suite with authorization
-
-```
-npm run test:auth -- <path to suite>
 ```
 
 ### Auto-fix and format
