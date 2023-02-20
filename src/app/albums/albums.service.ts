@@ -23,7 +23,7 @@ export class AlbumsService {
       });
       return await this.albumRepository.save(album);
     } catch (e) {
-      throwException(e, 400);
+      throwException('Validation error', 400);
     }
   }
 
@@ -49,7 +49,7 @@ export class AlbumsService {
         album.artistId = artistId;
         return await this.albumRepository.save(album);
       } catch (e) {
-        throwException(e, 400);
+        throwException('Validation error', 400);
       }
     }
   }

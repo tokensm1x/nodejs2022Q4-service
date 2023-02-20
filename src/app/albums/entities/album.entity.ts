@@ -1,5 +1,5 @@
-import { Artist } from 'src/app/artists/entities/artist.entity';
-import { Track } from 'src/app/tracks/entities/track.entity';
+import { Artist } from '../../artists/entities/artist.entity';
+import { Track } from '../../tracks/entities/track.entity';
 import {
   Column,
   Entity,
@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-@Entity('Album')
+@Entity()
 export class Album {
   @PrimaryGeneratedColumn('uuid')
   id: string;

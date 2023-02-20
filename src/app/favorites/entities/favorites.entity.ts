@@ -1,10 +1,10 @@
 import { Exclude } from 'class-transformer';
-import { Album } from 'src/app/albums/entities/album.entity';
-import { Artist } from 'src/app/artists/entities/artist.entity';
-import { Track } from 'src/app/tracks/entities/track.entity';
+import { Album } from '../../albums/entities/album.entity';
+import { Artist } from '../../artists/entities/artist.entity';
+import { Track } from '../../tracks/entities/track.entity';
 import { Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('Favorites')
+@Entity()
 export class Favorites {
   @PrimaryGeneratedColumn('uuid')
   @Exclude()

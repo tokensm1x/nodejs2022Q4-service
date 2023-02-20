@@ -24,7 +24,7 @@ export class TracksService {
       });
       return await this.trackRepository.save(track);
     } catch (e) {
-      throwException(e, 400);
+      throwException('Validation error', 400);
     }
   }
 
@@ -50,7 +50,7 @@ export class TracksService {
         track.name = updateTrackDto.name;
         return await this.trackRepository.save(track);
       } catch (e) {
-        throwException(e, 400);
+        throwException('Validation error', 400);
       }
     }
   }

@@ -8,7 +8,7 @@ import {
   VersionColumn,
 } from 'typeorm';
 
-@Entity('User')
+@Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;

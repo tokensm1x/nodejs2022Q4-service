@@ -10,7 +10,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:docker": "docker-compose up --build",
+    "start:docker": "docker-compose up",
     "docker:scan": "docker scan nodejs2022q4-service-postgres && docker scan nodejs2022q4-service-nest",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -20,10 +20,16 @@
     "test:auth": "cross-env TEST_MODE=auth jest --config ./test/jest-e2e.json",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "typeorm": "npx typeorm-ts-node-esm -d src/data-source.ts",
+    "migration:generate": "npm run typeorm migration:generate ./db/migrations/init",
+    "migration:create": "npx typeorm migration:create ./db/migrations/init",
+    "migration:run": "npx typeorm migration:run -d ./dist/src/data-source.js",
+    "migration:revert": "npx typeorm migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^8.0.0",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/mapped-types": "^1.0.1",

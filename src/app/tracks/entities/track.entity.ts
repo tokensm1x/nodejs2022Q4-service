@@ -1,8 +1,8 @@
-import { Album } from 'src/app/albums/entities/album.entity';
-import { Artist } from 'src/app/artists/entities/artist.entity';
+import { Album } from '../../albums/entities/album.entity';
+import { Artist } from '../../artists/entities/artist.entity';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('Track')
+@Entity()
 export class Track {
   @PrimaryGeneratedColumn('uuid')
   id: string;

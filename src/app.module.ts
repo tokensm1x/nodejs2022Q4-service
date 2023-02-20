@@ -13,10 +13,14 @@ import { Track } from './app/tracks/entities/track.entity';
 import { Album } from './app/albums/entities/album.entity';
 import { Artist } from './app/artists/entities/artist.entity';
 import { Favorites } from './app/favorites/entities/favorites.entity';
-import { dataSourceOptions } from 'db/data-source';
+import { dataSourceOptions } from 'src/data-source';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+    }),
     UsersModule,
     TracksModule,
     AlbumsModule,
