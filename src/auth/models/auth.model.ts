@@ -2,4 +2,7 @@ export interface SuccessResponse {
   message: string;
 }
 
-export interface ResponseBody {}
+export interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+}

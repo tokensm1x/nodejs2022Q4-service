@@ -14,7 +14,10 @@ import { DeleteResult, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 import { ErrorsDb } from 'src/common/enums/errors-db.enum';
-import { hashPassword } from 'src/common/helpers/hash-password';
+import {
+  hashPassword,
+  comparePassword,
+} from 'src/common/helpers/hash-password';
 
 @Injectable()
 export class UsersService {
@@ -55,9 +58,13 @@ export class UsersService {
     const { oldPassword, newPassword } = updateUserDto;
 
     const user: User = await this.findOne(id);
+    const isValidPassword = await comparePassword(
+      oldPassword,
+      user.password || '',
+    );
     if (!user) {
       throwException(USER_NOT_FOUND, HttpStatus.NOT_FOUND);
-    } else if (user.password !== oldPassword) {
+    } else if (!isValidPassword) {
       throwException(INCORRECT_PASSWORD, HttpStatus.FORBIDDEN);
     } else {
       user.password = await hashPassword(newPassword);

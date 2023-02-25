@@ -15,7 +15,7 @@ export const dataSourceOptions: DataSourceOptions = {
   port: +process.env.POSTGRES_PORT,
   entities: [User, Album, Track, Artist, Favorites],
   migrations: ['dist/db/migrations/*.js'],
-  logging: true,
+  // logging: true,
   // migrationsRun: true,
   synchronize: true,
 };
