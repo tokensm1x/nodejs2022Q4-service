@@ -13,7 +13,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: '256' })
+  @Column({ type: 'varchar', length: '256', unique: true })
   login: string;
 
   @Exclude()

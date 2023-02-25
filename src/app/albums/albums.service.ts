@@ -61,30 +61,5 @@ export class AlbumsService {
     } else {
       throwException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
-    // const albumIndex: number = this._db.albums.findIndex(
-    //   (album: AlbumModel) => album.id === id,
-    // );
-    // if (albumIndex < 0) {
-    //   throwException(ALBUM_NOT_FOUND, HttpStatus.NOT_FOUND);
-    // } else {
-    //   this._trackService.clearAlbums(id);
-    //   this._favsService.removeAlbum(id, true);
-    //   this._db.albums.splice(albumIndex, 1);
-    //   return null;
-    // }
   }
-
-  // clearArtists(id: string): void {
-  //   const albums = this._db.albums.map((el: AlbumModel) => {
-  //     if (el.artistId === id) {
-  //       return {
-  //         ...el,
-  //         artistId: null,
-  //       };
-  //     } else {
-  //       return el;
-  //     }
-  //   });
-  //   this._db.albums = albums;
-  // }
 }

@@ -16,8 +16,8 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: [User, Album, Track, Artist, Favorites],
   migrations: ['dist/db/migrations/*.js'],
   logging: true,
-  migrationsRun: true,
-  synchronize: false,
+  // migrationsRun: true,
+  synchronize: true,
 };
 
 const dataSource = new DataSource(dataSourceOptions);
