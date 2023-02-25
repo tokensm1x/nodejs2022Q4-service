@@ -27,7 +27,7 @@ export class AuthService {
     private readonly tokenService: TokenService,
   ) {}
 
-  async signUp(createUserDto: CreateUserDto): Promise<SuccessResponse> {
+  async signUp(createUserDto: CreateUserDto): Promise<User> {
     try {
       createUserDto.password = await hashPassword(createUserDto.password);
       const user: User = await this.userRepository.create({
@@ -35,10 +35,8 @@ export class AuthService {
         password: createUserDto.password,
         version: 1,
       });
-      await this.userRepository.save(user);
-      return {
-        message: REGISTERED_SUCCESSFULLY,
-      };
+      const newUser = await this.userRepository.save(user);
+      return newUser;
     } catch (e) {
       if (e.code === ErrorsDb.UNIQUE_LOGIN) {
         throwException(LOGIN_IN_USE, HttpStatus.BAD_REQUEST);

@@ -10,6 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/app/users/dto/create-user.dto';
+import { User } from 'src/app/users/entities/user.entity';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { LoginResponse, SuccessResponse } from './models/auth.model';
@@ -24,7 +25,7 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   async signUp(
     @Body(ValidationPipe) createUserDto: CreateUserDto,
-  ): Promise<SuccessResponse> {
+  ): Promise<User> {
     return await this.authService.signUp(createUserDto);
   }
 
