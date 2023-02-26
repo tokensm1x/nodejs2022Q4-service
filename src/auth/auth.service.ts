@@ -7,6 +7,7 @@ import { ErrorsDb } from 'src/common/enums/errors-db.enum';
 import { throwException } from 'src/common/exceptions/error-handler';
 import {
   FAILED_LOGIN,
+  INVALID_REFRESH,
   LOGIN_IN_USE,
   REGISTERED_SUCCESSFULLY,
   SOMETHING_WENT_WRONG,
@@ -18,6 +19,7 @@ import {
 } from 'src/common/helpers/hash-password';
 import { LoginDto } from './dto/login.dto';
 import { TokenService } from './token/token.service';
+import { RefreshDto } from './dto/refresh.dto';
 
 @Injectable()
 export class AuthService {
@@ -52,10 +54,35 @@ export class AuthService {
     if (!user) throwException(FAILED_LOGIN, HttpStatus.FORBIDDEN);
     const isValidPassword = await comparePassword(password, user.password);
     if (!isValidPassword) throwException(FAILED_LOGIN, HttpStatus.FORBIDDEN);
-    const accessToken = await this.tokenService.generateToken(user);
+    const accessToken = await this.tokenService.generateAccessToken(user);
+    const refreshToken = await this.tokenService.generateRefreshToken(user);
+    await this.updateRefreshToken(user, refreshToken);
     return {
       accessToken,
-      refreshToken: 'test',
+      refreshToken,
     };
+  }
+
+  async refresh(refreshDto: RefreshDto): Promise<LoginResponse> {
+    const { refreshToken } = refreshDto;
+    const user = await this.tokenService.verifyRefreshToken(refreshToken);
+    const userByTokenAndId = await this.userRepository.findOneBy({
+      refreshToken,
+      id: user?.id,
+    });
+    if (!user || !userByTokenAndId)
+      throwException(INVALID_REFRESH, HttpStatus.FORBIDDEN);
+    const accessToken = await this.tokenService.generateAccessToken(user);
+    const newRefreshToken = await this.tokenService.generateRefreshToken(user);
+    await this.updateRefreshToken(user, newRefreshToken);
+    return {
+      accessToken,
+      refreshToken: newRefreshToken,
+    };
+  }
+
+  async updateRefreshToken(user: User, refreshToken: string): Promise<void> {
+    user.refreshToken = refreshToken;
+    await this.userRepository.save(user);
   }
 }

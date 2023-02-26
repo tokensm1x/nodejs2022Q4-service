@@ -11,8 +11,10 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/app/users/dto/create-user.dto';
 import { User } from 'src/app/users/entities/user.entity';
+import { RefreshTokenValidationPipe } from 'src/pipes/validateRefreshToken.pipe';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
+import { RefreshDto } from './dto/refresh.dto';
 import { LoginResponse, SuccessResponse } from './models/auth.model';
 
 @UseInterceptors(ClassSerializerInterceptor)
@@ -36,5 +38,14 @@ export class AuthController {
     @Body(ValidationPipe) loginDto: LoginDto,
   ): Promise<LoginResponse> {
     return await this.authService.login(loginDto);
+  }
+
+  @Post('refresh')
+  @Header('Content-Type', 'application/json')
+  @HttpCode(HttpStatus.OK)
+  async refresh(
+    @Body(new RefreshTokenValidationPipe()) refreshDto: RefreshDto,
+  ): Promise<LoginResponse> {
+    return await this.authService.refresh(refreshDto);
   }
 }

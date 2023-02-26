@@ -123,7 +123,7 @@ paths:
         - Login
       security: []
       summary: Login
-      description: Logins a user and returns a JWT-token
+      description: Logins a user and returns a JWT-token and Refresh token
       requestBody:
         required: true
         content:
@@ -149,11 +149,51 @@ paths:
               schema:
                 type: object
                 properties:
-                  token:
+                  refreshToken:
+                    type: string
+                  accessToken:
                     type: string
                 description: JWT Token
         403:
           description: Incorrect login or password
+  /auth/refresh:
+    post:
+      tags:
+        - Refresh
+      security: []
+      summary: Refresh
+      description: Logins a user by refresh token and returns a JWT-token and new Refresh token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                refreshToken :
+                  type: string
+                  description: RefreshToken
+              required:
+                - user
+                - refreshToken
+      responses:
+        200:
+          description: .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refreshToken:
+                    type: string
+                  accessToken:
+                    type: string
+                description: JWT Token
+        401:
+          description: Refresh token is required
+        403:
+          description: Refresh token is invalid
   /auth/signup:
     post:
       tags:
