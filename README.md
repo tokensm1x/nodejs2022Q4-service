@@ -56,16 +56,10 @@ http://localhost:4000/doc/
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests with authorization
 
 ```
-npm run test
-```
-
-To run only one of all test suites
-
-```
-npm run test -- <path to suite>
+npm run test:auth
 ```
 
 ### Auto-fix and format
