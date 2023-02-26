@@ -9,10 +9,9 @@ import {
   FAILED_LOGIN,
   INVALID_REFRESH,
   LOGIN_IN_USE,
-  REGISTERED_SUCCESSFULLY,
   SOMETHING_WENT_WRONG,
 } from 'src/common/constants/users';
-import { LoginResponse, SuccessResponse } from './models/auth.model';
+import { LoginResponse } from './models/auth.model';
 import {
   hashPassword,
   comparePassword,

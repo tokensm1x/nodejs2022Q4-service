@@ -11,7 +11,6 @@ import {
 } from 'src/common/constants/users';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
 import { ErrorsDb } from 'src/common/enums/errors-db.enum';
 import {

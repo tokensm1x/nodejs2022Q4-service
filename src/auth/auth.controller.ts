@@ -15,7 +15,7 @@ import { RefreshTokenValidationPipe } from 'src/pipes/validateRefreshToken.pipe'
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RefreshDto } from './dto/refresh.dto';
-import { LoginResponse, SuccessResponse } from './models/auth.model';
+import { LoginResponse } from './models/auth.model';
 
 @UseInterceptors(ClassSerializerInterceptor)
 @Controller('auth')
