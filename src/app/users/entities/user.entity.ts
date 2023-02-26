@@ -13,7 +13,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: '256' })
+  @Column({ type: 'varchar', length: '256', unique: true })
   login: string;
 
   @Exclude()
@@ -22,6 +22,10 @@ export class User {
 
   @VersionColumn()
   version: number;
+
+  @Exclude()
+  @Column({ type: 'varchar', default: '' })
+  refreshToken: string;
 
   @CreateDateColumn({ type: 'timestamp' })
   @Transform(({ value }) => new Date(value).getTime())

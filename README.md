@@ -9,7 +9,7 @@ git clone https://github.com/tokensm1x/nodejs2022Q4-service.git
 ## Installing NPM modules
 
 ```
-npm install --legacy-peer-deps 
+npm install --legacy-peer-deps
 ```
 
 ## Installing Docker
@@ -33,10 +33,13 @@ npm run docker:scan
 ## Downloading images from DockerHub
 
 Nest app
+
 ```
 docker pull tokensmix/nodejs2022q4-service:nest
 ```
+
 Postgres
+
 ```
 docker pull tokensmix/nodejs2022q4-service:postgres
 ```
@@ -53,16 +56,10 @@ http://localhost:4000/doc/
 
 After application running open new terminal and enter:
 
-To run all tests without authorization
+To run all tests with authorization
 
 ```
-npm run test
-```
-
-To run only one of all test suites
-
-```
-npm run test -- <path to suite>
+npm run test:auth
 ```
 
 ### Auto-fix and format

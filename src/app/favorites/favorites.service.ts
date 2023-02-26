@@ -94,16 +94,6 @@ export class FavoritesService {
       await this.favoritesRepository.save(favs);
       return null;
     }
-
-    // const trackIndex: number = this._db.favorites.tracks.findIndex(
-    //   (track: string) => track === id,
-    // );
-    // if (trackIndex < 0 && !isDeleted) {
-    //   throwException(TRACK_NOT_FOUND, HttpStatus.NOT_FOUND);
-    // } else if (trackIndex >= 0) {
-    //   this._db.favorites.tracks.splice(trackIndex, 1);
-    // }
-    // return null;
   }
 
   async removeAlbum(id): Promise<null> {
