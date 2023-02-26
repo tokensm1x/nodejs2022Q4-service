@@ -13,6 +13,9 @@ import { AuthModule } from './auth/auth.module';
 import { LoggerModule } from './logger/logger.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
 import 'dotenv/config';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { HttpExceptionFilter } from './logger/http-exception.filter';
+import { HttpInterceptor } from './http.interceptor';
 
 @Module({
   imports: [
@@ -29,7 +32,17 @@ import 'dotenv/config';
     LoggerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpExceptionFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: HttpInterceptor,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
